@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'family_add.dart';
 
-void main() => runApp(FamilyPage());
+void main() => runApp(FamilyHomePage());
 
-class FamilyPage extends StatelessWidget {
+class FamilyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Family Members',
@@ -28,8 +29,13 @@ class FamilyPage extends StatelessWidget {
 class FamilyButton1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: null, // will move to add photo page later
-      child: new Text('Add a new photo'),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FamilyAddPage()),
+        );
+      },
+        child: new Text('Add a new photo'),
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
@@ -46,7 +52,9 @@ class FamilyButton2 extends StatelessWidget {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+        //onPressed: () {},
       ),
     );
   }
 }
+
