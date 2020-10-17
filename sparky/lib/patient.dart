@@ -1,3 +1,9 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 /// Flutter code sample for AppBar
 
 // This sample shows TabBar with two tabs.
@@ -52,6 +58,10 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
     super.dispose();
   }
 
+  int num_images = 10;
+
+  List<Image> images = new List<Image>();
+  // images.add(new Image());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,27 +76,26 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
         controller: _tabController,
         children: myTabs.map((Tab tab) {
           final String label = tab.text;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Text('$label memories'),
-              // Text('$label memories'),
-              // Text('$label memories'),
-              GridView.count(
-                crossAxisCount: 4,
-                // Generate 100 widgets that display their index in the List.
-                children: List.generate(100, (index) {
-                  return Center(
-                    child: Image(),
-                  );
-                }),
-              ),
-            ],
+          return Scaffold (
+            body: GridView.count(
+              crossAxisCount: 4,
+              children: List.generate(32, (index) {
+                return Center(
+                  child: (
+                      Image.network("https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png")
+                  ),
+                );
+              }),
+            ),
           );
         }).toList(),
       ),
     );
   }
 }
+
+
+
+
 
 

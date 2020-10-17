@@ -47,9 +47,8 @@ class _AddedPhotosState extends State<MyPhotosPage> {
         // Generate 100 widgets that display their index in the List.
         children: List.generate(16, (index) {
           return Center(
-            child: Text(
-              'Item $index',
-              style: Theme.of(context).textTheme.headline5,
+            child: (
+              Image.network("https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png")
             ),
           );
         }),
