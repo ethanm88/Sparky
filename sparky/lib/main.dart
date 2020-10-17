@@ -1,89 +1,206 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Firebase.initializeApp();
     return MaterialApp(
-      title: 'Baby Names',
-      home: MyHomePage(),
+      home: ImageCapture(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
+
+/// Widget to capture and crop the image
+class ImageCapture extends StatefulWidget {
+  _ImageCaptureState createState() {
+    return _ImageCaptureState();
   }
+
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ImageCaptureState extends State<ImageCapture> {
+  /// Active image file
+  File _imageFile;
+
+  /// Cropper plugin
+  Future<void> _cropImage() async {
+    print('here');
+    File cropped = await ImageCropper.cropImage(
+        sourcePath: _imageFile.path,
+        // ratioX: 1.0,
+        // ratioY: 1.0,
+        // maxWidth: 512,
+        // maxHeight: 512,
+        toolbarColor: Colors.purple,
+        toolbarWidgetColor: Colors.white,
+        toolbarTitle: 'Crop It'
+    );
+
+    setState(() {
+      _imageFile = cropped ?? _imageFile;
+    });
+  }
+
+  /// Select an image via gallery or camera
+  Future<void> _pickImage(ImageSource source) async {
+    File selected = await ImagePicker.pickImage(source: source);
+
+    setState(() {
+      _imageFile = selected;
+    });
+  }
+
+  /// Remove image
+  void _clear() {
+    setState(() => _imageFile = null);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("building");
     return Scaffold(
-      appBar: AppBar(title: Text('Baby Name Votes')),
-      body: _buildBody(context),
-    );
-  }
 
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('baby').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
-
-        return _buildList(context, snapshot.data.documents);
-      },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final record = Record.fromSnapshot(data);
-
-    return Padding(
-      key: ValueKey(record.name),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
+      // Select an image from the camera or gallery
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.photo_camera),
+              onPressed: () => _pickImage(ImageSource.camera),
+            ),
+            IconButton(
+              icon: Icon(Icons.photo_library),
+              onPressed: () => _pickImage(ImageSource.gallery),
+            ),
+          ],
         ),
-        child: ListTile(
-          title: Text(record.name),
-          trailing: Text(record.votes.toString()),
-          onTap: () => print(record),
-        ),
+      ),
+
+      // Preview the image and crop it
+      body: ListView(
+        children: <Widget>[
+          if (_imageFile != null) ...[
+
+            Image.file(_imageFile),
+
+            Row(
+              children: <Widget>[
+                FlatButton(
+                  child: Icon(Icons.crop),
+                  onPressed: _cropImage,
+                ),
+                FlatButton(
+                  child: Icon(Icons.refresh),
+                  onPressed: _clear,
+                ),
+              ],
+            ),
+
+            Uploader(file: _imageFile)
+          ]
+        ],
       ),
     );
   }
 }
 
-class Record {
-  final String name;
-  final int votes;
-  final DocumentReference reference;
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        assert(map['votes'] != null),
-        name = map['name'],
-        votes = map['votes'];
+class Uploader extends StatefulWidget {
+  final File file;
+  Uploader({Key key, this.file}): super(key: key);
 
-  Record.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data(), reference: snapshot.reference);
+  createState() => _UploaderState();
+}
+
+class _UploaderState extends State<Uploader> {
+  final FirebaseStorage _storage =
+  FirebaseStorage(storageBucket: 'gs://sparky-b4bb8.appspot.com');
+
+  StorageUploadTask _uploadTask;
+
+  /// Starts an upload task
+  void _startUpload() {
+
+    /// Unique file name for the file
+    String filePath = 'images/${DateTime.now()}.png';
+
+    setState(() {
+      _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
+    });
+  }
 
   @override
-  String toString() => "Record<$name:$votes>";
+  Widget build(BuildContext context) {
+    if (_uploadTask != null) {
+
+      /// Manage the task state and event subscription with a StreamBuilder
+      return StreamBuilder<StorageTaskEvent>(
+          stream: _uploadTask.events,
+          builder: (_, snapshot) {
+            var event = snapshot?.data?.snapshot;
+
+            double progressPercent = event != null
+                ? event.bytesTransferred / event.totalByteCount
+                : 0;
+
+            return Column(
+
+              children: [
+                if (_uploadTask.isComplete)
+                  Text('🎉🎉🎉'),
+
+
+                if (_uploadTask.isPaused)
+                  FlatButton(
+                    child: Icon(Icons.play_arrow),
+                    onPressed: _uploadTask.resume,
+                  ),
+
+                if (_uploadTask.isInProgress)
+                  FlatButton(
+                    child: Icon(Icons.pause),
+                    onPressed: _uploadTask.pause,
+                  ),
+
+                // Progress bar
+                LinearProgressIndicator(value: progressPercent),
+                Text(
+                    '${(progressPercent * 100).toStringAsFixed(2)} % '
+                ),
+              ],
+            );
+          });
+
+
+    } else {
+
+      // Allows user to decide when to start the upload
+      return FlatButton.icon(
+        label: Text('Upload Image'),
+        icon: Icon(Icons.cloud_upload),
+        onPressed: _startUpload,
+      );
+
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
