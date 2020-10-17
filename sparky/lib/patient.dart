@@ -60,7 +60,10 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
 
   int num_images = 10;
 
-  List<Image> images = new List<Image>();
+  List<String> images = new List<String>();
+
+
+
   // images.add(new Image());
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
           final String label = tab.text;
           return Scaffold (
             body: GridView.count(
-              crossAxisCount: 4,
+              crossAxisCount: 3,
               children: List.generate(32, (index) {
                 return Center(
                   child: (
