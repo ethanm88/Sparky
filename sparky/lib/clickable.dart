@@ -20,41 +20,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-          key: scaffoldKey,
-            body: SafeArea(
-                child: Center(
-                    child: Column(children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) {
-                            return DetailScreen();
-                          }));
-                        },
-                        child: Image.network(
-                          'https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png',
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: setState,
-                        child: Image.network(
-                          'https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png',
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      )],
-                    ),
-                ),
-            ),
-        ),
+        home: MyClickable()
     );
   }
-
-
-
 }
+
+class MyClickable extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldKey,
+      body: SafeArea(
+        child: Center(
+          child: Column(children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return DetailScreen();
+                }));
+              },
+              child: Image.network(
+                'https://images.pexels.com/photos/1804035/pexels-photo-1804035.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            )],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 
 class DetailScreen extends StatelessWidget {
   @override
@@ -65,7 +63,7 @@ class DetailScreen extends StatelessWidget {
           child: Hero(
             tag: 'imageHero',
             child: Image.network(
-              'https://raw.githubusercontent.com/flutter/website/master/src/_includes/code/layout/lakes/images/lake.jpg',
+              'https://images.pexels.com/photos/1804035/pexels-photo-1804035.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
             ),
           ),
         ),
