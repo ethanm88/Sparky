@@ -138,7 +138,7 @@ class _UploaderState extends State<Uploader> {
 
   /// Starts an upload task
   Future<void> _startUpload() async {
-
+    /*
     /// Unique file name for the file
     String documentId = '2LjCQBHAxrTD6tQ9F5eI'; //change
     Widget build(BuildContext context) {
@@ -156,7 +156,9 @@ class _UploaderState extends State<Uploader> {
       );
     }
 
-    String filePath = 'images/hello.png';
+     */
+
+    String filePath = 'images/${DateTime.now()}.png';
     String caption = _ImageCaptureState.captionController.text;
     print(caption);
     setState(() {
