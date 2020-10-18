@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
+// This files handles UI for photo uploading on the add photo page.
 /// Widget to capture and crop the image
 class ImageCapture extends StatefulWidget {
   _ImageCaptureState createState() {
@@ -16,9 +16,9 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   /// Active image file, caption for file
   File _imageFile;
-  String _caption;
+  // Controllers - added to get text from the caption/name boxes - Jose
   static final TextEditingController captionController = TextEditingController();
-
+  static final TextEditingController nameController = TextEditingController();
   /// Cropper plugin
   Future<void> _cropImage() async {
     print('here');
@@ -78,11 +78,19 @@ class _ImageCaptureState extends State<ImageCapture> {
         children: <Widget>[
           if (_imageFile != null) ...[
             Image.file(_imageFile, width: 450, height:450),
+            // Text fields for caption/name - Jose
             new TextField(
               controller: captionController,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 hintText: 'Caption',
+              ),
+            ),
+            new TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Family Member Name',
               ),
             ),
             Row(
@@ -125,7 +133,9 @@ class _UploaderState extends State<Uploader> {
 
     /// Unique file name for the file
     String filePath = 'images/${DateTime.now()}.png';
+    // Strings to take in the input from caption/name boxes - Jose
     String caption = _ImageCaptureState.captionController.text;
+    String name = _ImageCaptureState.nameController.text;
     print(caption);
     setState(() {
       _uploadTask = _storage.ref().child(filePath).putFile(widget.file);

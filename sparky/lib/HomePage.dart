@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'family_portal.dart';
-
+import 'patient.dart';
+// This file handles the UI and routing for the Home Page, the page all users
+// go to immediately after login.
 
 void main() => runApp(HomePage());
+// Class to handle home page structure
 class HomePage extends StatelessWidget {
 
-
-
+// Routes to patient portal page
+  goToPatientPortal(BuildContext context){
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => MyApp()));
+  }
+// Routes to family portal page
   goToFamilyPortal(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(
         builder: (context) => FamilyHomePage()));
   }
-//  goToPatientPortal(BuildContext context) {
-//    Navigator.push(context, MaterialPageRoute(
-//      builder: (context) => PatientHomePage()));
-// }
 
   Widget build(BuildContext context) {
    return MaterialApp(
@@ -34,7 +37,7 @@ class HomePage extends StatelessWidget {
            ),
            // Patient Button
            new ElevatedButton(
-               onPressed: () {/*goToPatientPortal(context);*/}, // TODO
+               onPressed: () {goToPatientPortal(context);},
                style: ButtonStyle(
                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                  backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
@@ -47,7 +50,7 @@ class HomePage extends StatelessWidget {
              ),
              // Family Button
          new ElevatedButton(
-             onPressed: () {goToFamilyPortal(context);}, // TODO
+             onPressed: () {goToFamilyPortal(context);},
              style: ButtonStyle(
                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),

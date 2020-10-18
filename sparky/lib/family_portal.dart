@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'family_add.dart';
-
+import 'patient.dart';
+// This file handles the "family portal" page; the page that family members go to
+// to add photos or browse existing photos.
 void main() => runApp(FamilyHomePage());
-
+// Main class for the page
 class FamilyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +27,7 @@ class FamilyHomePage extends StatelessWidget {
   }
 }
 
-
+// Button to go to add photo page
 class FamilyButton1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -43,11 +45,16 @@ class FamilyButton1 extends StatelessWidget {
     );
   }
 }
-
+// Button to browse existing photos
 class FamilyButton2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: null, // will move to add photo page later
+      onPressed: () {
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp())
+        );
+    },
       child: new Text('Browse existing photos'),
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
