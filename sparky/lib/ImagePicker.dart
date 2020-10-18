@@ -10,7 +10,6 @@ class ImageCapture extends StatefulWidget {
   _ImageCaptureState createState() {
     return _ImageCaptureState();
   }
-
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
@@ -18,7 +17,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   File _imageFile;
   // Controllers - added to get text from the caption/name boxes - Jose
   static final TextEditingController captionController = TextEditingController();
-  static final TextEditingController nameController = TextEditingController();
   /// Cropper plugin
   Future<void> _cropImage() async {
     print('here');
@@ -56,7 +54,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   Widget build(BuildContext context) {
     print("building");
     return Scaffold(
-
       // Select an image from the camera or gallery
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -82,15 +79,8 @@ class _ImageCaptureState extends State<ImageCapture> {
             new TextField(
               controller: captionController,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Caption',
-              ),
-            ),
-            new TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Family Member Name',
+              border: const OutlineInputBorder(),
+              hintText: 'Caption',
               ),
             ),
             Row(
@@ -135,7 +125,6 @@ class _UploaderState extends State<Uploader> {
     String filePath = 'images/${DateTime.now()}.png';
     // Strings to take in the input from caption/name boxes - Jose
     String caption = _ImageCaptureState.captionController.text;
-    String name = _ImageCaptureState.nameController.text;
     print(caption);
     setState(() {
       _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
