@@ -97,7 +97,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                           ),
                         ),
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],
