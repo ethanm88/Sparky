@@ -20,7 +20,7 @@ String category2 = 'Long Term';
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 
-// List<String> images = new List<String>();
+List<String> images = new List<String>();
 //
 // void addImage(String image) {
 //   setState(() {
@@ -92,7 +92,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                       GestureDetector(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (_) {
-                            addImage("image");
                             return DetailScreen();
                           }));
                         },
