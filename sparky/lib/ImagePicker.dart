@@ -6,6 +6,20 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// Widget to capture and crop the image
+
+void main() async {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ImageCapture(),
+    );
+  }
+}
+
 class ImageCapture extends StatefulWidget {
   _ImageCaptureState createState() {
     return _ImageCaptureState();
