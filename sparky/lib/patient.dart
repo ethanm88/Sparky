@@ -23,7 +23,9 @@ final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 List<String> images = new List<String>();
 
 void addImage(String image) {
-  images.add(image);
+  setState(() {
+    images.add(image);
+  });
 }
 
 class MyApp extends StatelessWidget {
