@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sparky/example.dart';
-import 'package:photo_view/photo_view.dart';
+// import 'package:photo_view/photo_view.dart';
 
 
 void main() => runApp(MyApp());

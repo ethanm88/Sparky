@@ -85,7 +85,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
               children: List.generate(32, (index) {
                 return Center(
                   child: (
-
                       Image.network("https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png")
                   ),
                 );
