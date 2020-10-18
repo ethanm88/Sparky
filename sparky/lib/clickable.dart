@@ -6,7 +6,7 @@ final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 
 void setState(Null Function() param0) {
-  scaffoldKey.currentState.showSnackBar(snackBar);
+  // scaffoldKey.currentState.showSnackBar(snackBar);
 
 }
 

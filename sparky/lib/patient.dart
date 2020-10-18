@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'clickable.dart';
+// import 'clickable.dart';
 /// Flutter code sample for AppBar
 
 // This sample shows TabBar with two tabs.
@@ -40,8 +40,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class MyTabbedPage extends StatefulWidget {
   const MyTabbedPage({ Key key }) : super(key: key);
   @override
@@ -67,11 +65,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
     _tabController.dispose();
     super.dispose();
   }
-
-  int num_images = 10;
-
-  List<String> images = new List<String>();
-
 
 
   // images.add(new Image());
@@ -99,6 +92,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                       GestureDetector(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (_) {
+                            addImage("image");
                             return DetailScreen();
                           }));
                         },
@@ -115,6 +109,27 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
             ),
           );
         }).toList(),
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: Image.network(
+              'https://images.pexels.com/photos/1804035/pexels-photo-1804035.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }
