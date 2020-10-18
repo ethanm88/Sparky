@@ -90,15 +90,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) {
-                            return DetailScreen();
-                          }));
-                        },
-
-                        child: Image.network(images[index],
-                          width: 200,
-                          fit: BoxFit.cover,
+                        child: Center(
+                          child: Hero(
+                            tag: 'imageHero',
+                            child: Image.network(images[index]),
+                          ),
                         ),
                       ),
                     ],
@@ -113,23 +109,23 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
   }
 }
 
-class DetailScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        child: Center(
-          child: Hero(
-            tag: 'imageHero',
-            child: Image.network(
-              'https://images.pexels.com/photos/1804035/pexels-photo-1804035.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-            ),
-          ),
-        ),
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
+// class DetailScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context, ) {
+//     return Scaffold(
+//       body: GestureDetector(
+//         child: Center(
+//           child: Hero(
+//             tag: 'imageHero',
+//             child: Image.network(
+//               'https://images.pexels.com/photos/1804035/pexels-photo-1804035.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+//             ),
+//           ),
+//         ),
+//         onTap: () {
+//           Navigator.pop(context);
+//         },
+//       ),
+//     );
+//   }
 }
