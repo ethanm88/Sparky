@@ -20,13 +20,13 @@ String category2 = 'Long Term';
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 
-List<String> images = new List<String>();
-
-void addImage(String image) {
-  setState(() {
-    images.add(image);
-  });
-}
+// List<String> images = new List<String>();
+//
+// void addImage(String image) {
+//   setState(() {
+//     images.add(image);
+//   });
+// }
 
 class MyApp extends StatelessWidget {
   static const String _title = 'Spark your day!';
