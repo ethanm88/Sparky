@@ -1,22 +1,47 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-// This files handles UI for photo uploading on the add photo page.
-/// Widget to capture and crop the image
-class ImageCapture extends StatefulWidget {
-  _ImageCaptureState createState() {
-    return _ImageCaptureState();
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dbClasses.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ImageCapture(),
+    );
   }
 }
 
+
+/// Widget to capture and crop the image
+class ImageCapture extends StatefulWidget {
+  _ImageCaptureState createState() {
+
+    return _ImageCaptureState();
+  }
+
+}
+
 class _ImageCaptureState extends State<ImageCapture> {
+
+
   /// Active image file, caption for file
   File _imageFile;
-  // Controllers - added to get text from the caption/name boxes - Jose
+  String _caption;
   static final TextEditingController captionController = TextEditingController();
+
   /// Cropper plugin
   Future<void> _cropImage() async {
     print('here');
@@ -54,8 +79,25 @@ class _ImageCaptureState extends State<ImageCapture> {
   Widget build(BuildContext context) {
     print("building");
     return Scaffold(
-      // Select an image from the camera or gallery
-      bottomNavigationBar: BottomAppBar(
+
+        appBar: AppBar(title: Text('Ted\'s Page')),
+    bottomNavigationBar: BottomAppBar(
+    child: Row(
+    children: <Widget>[
+    IconButton(
+    icon: Icon(Icons.photo_camera),
+    onPressed: () => _pickImage(ImageSource.camera),
+    ),
+    IconButton(
+    icon: Icon(Icons.photo_library),
+    onPressed: () => _pickImage(ImageSource.gallery),
+    ),
+    ],
+    ),
+
+
+    /*
+            bottomNavigationBar: BottomAppBar(
         child: Row(
           children: <Widget>[
             IconButton(
@@ -69,37 +111,36 @@ class _ImageCaptureState extends State<ImageCapture> {
           ],
         ),
       ),
+      * */
+    // Preview the image and crop it
+    body: ListView(
+    children: <Widget>[
+    if (_imageFile != null) ...[
+    new TextField(
+    controller: captionController,
+    decoration: InputDecoration(
+    border: const OutlineInputBorder(),
+    hintText: 'Caption',
+    ),
+    ),
 
-      // Preview the image and crop it
-      body: ListView(
-        children: <Widget>[
-          if (_imageFile != null) ...[
-            Image.file(_imageFile, width: 450, height:450),
-            // Text fields for caption/name - Jose
-            new TextField(
-              controller: captionController,
-              decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              hintText: 'Caption',
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                FlatButton(
-                  child: Icon(Icons.crop),
-                  onPressed: _cropImage,
-                ),
-                FlatButton(
-                  child: Icon(Icons.refresh),
-                  onPressed: _clear,
-                ),
-              ],
-            ),
+    Row(
+    children: <Widget>[
+    FlatButton(
+    child: Icon(Icons.crop),
+    onPressed: _cropImage,
+    ),
+    FlatButton(
+    child: Icon(Icons.refresh),
+    onPressed: _clear,
+    ),
+    ],
+    ),
 
-            Uploader(file: _imageFile)
-          ]
-        ],
-      ),
+    Uploader(file: _imageFile)
+    ]
+    ],
+    ),
     );
   }
 }
@@ -119,16 +160,72 @@ class _UploaderState extends State<Uploader> {
   StorageUploadTask _uploadTask;
 
   /// Starts an upload task
+  Future<int> getId(String docId, String element) async {
+    int s = 0;
+    await FirebaseFirestore.instance.collection('users').where(
+        FieldPath.documentId,
+        isEqualTo: docId
+    ).get().then((event) {
+      if (event.docs.isNotEmpty) {
+        Map<String, dynamic> documentData = event.docs.single.data(); //if it is a single document
+
+        s = documentData[element];
+        print(s);
+      }
+    }).catchError((e) => print("error fetching data: $e"));
+    return s;
+  }
+
+
   void _startUpload() {
 
     /// Unique file name for the file
-    String filePath = 'images/${DateTime.now()}.png';
-    // Strings to take in the input from caption/name boxes - Jose
-    String caption = _ImageCaptureState.captionController.text;
-    print(caption);
-    setState(() {
-      _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
+    String documentId = '2LjCQBHAxrTD6tQ9F5eI'; //change
+    int id;
+    int num_images;
+    getId(documentId, 'id').then((value) {
+      print('Value1');
+      print(value);
+      id = value;
+
+
+      getId(documentId, 'numImages').then((value) {
+        print('Value2');
+        num_images = value;
+
+        //print(num_images);
+        //print((num_images+1).toString());
+        //print(id);
+        String identifier = id.toString() + '_' + (num_images+1).toString();
+        String filePath = 'images/${identifier}.png';
+
+        String caption_text = _ImageCaptureState.captionController.text;
+
+        Picture _userObj = new Picture(
+            imageId: identifier,
+            caption: caption_text
+        );
+
+        CollectionReference dbReplies = FirebaseFirestore.instance.collection('images');
+        FirebaseFirestore.instance.runTransaction((Transaction tx) async {
+          var _result = await dbReplies.add(_userObj.toJson());
+
+        });
+        FirebaseFirestore.instance
+            .collection('users')
+            .document(documentId)
+            .updateData({
+          'num_images': num_images+1
+        });
+        setState(() {
+          _uploadTask = _storage.ref().child(filePath).putFile(widget.file);
+        });
+      });
+
     });
+
+
+
   }
 
   @override
