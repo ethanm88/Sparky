@@ -29,8 +29,8 @@ List<String> images = new List<String>();
 // }
 
 class MyApp extends StatelessWidget {
-  static const String _title = 'Spark your day!';
-
+  static const String _title = "Ted's page!";
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -92,12 +92,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                       GestureDetector(
                         child: Center(
                           child: Hero(
-                            tag: 'imageHero',
+                            tag: 'imageHero $index',
                             child: Image.network(images[index]),
                           ),
                         ),
                         onTap: () {
                           Navigator.of(context).pop();
+                          // Navigator.push(new BuildContext(), route)
                         },
                       ),
                     ],
