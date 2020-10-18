@@ -12,6 +12,7 @@ class User {
   int id;
   bool isParent;
   int parentId;
+  int numImages;
   List<dynamic> connections;
   DocumentReference reference = null; //check
 
@@ -20,6 +21,7 @@ class User {
     @required this.id,
     @required this.isParent,
     @required this.parentId,
+    @required this.numImages,
     @required this.connections
   });
 
@@ -29,7 +31,8 @@ class User {
         'id': this.id,
         'isParent': this.isParent,
         'parentId': this.parentId,
-        //'connections': this.connections
+        'numImages': this.numImages,
+        'connections': this.connections
       };
   void addData(firestoreInstance) {
     firestoreInstance.collection("users").add(
@@ -38,7 +41,8 @@ class User {
           'id': this.id,
           'isParent': this.isParent,
           'parentId': this.parentId,
-          //'connections': this.connections
+          'numImages': this.numImages,
+          'connections': this.connections
 
         }).then((value){
       print(value.id);
@@ -55,7 +59,7 @@ class User {
         id = map['id'],
         isParent = map['isParent'],
         parentId = map['parentId'];
-  //connections = map['connections'];
+        //connections = map['connections'];
   Future updateData(String name, int id, bool isParent, int parentId, List connections) async{
     Firestore.instance
         .collection('Users')
@@ -65,7 +69,7 @@ class User {
       'id': id,
       'isParent': isParent,
       'parentId': parentId,
-      //'connections': connections
+      'connections': connections
     });
 
   }
@@ -88,12 +92,12 @@ class User {
 }
 
 
-class Image {
+class Picture {
   String caption;
   String imageId;
   DocumentReference reference = null; //check
 
-  Image({
+  Picture({
     @required this.caption,
     @required this.imageId
   });
@@ -117,7 +121,7 @@ class Image {
   }
 
 
-  User.fromMap(Map<String, dynamic> map, {this.reference})
+  Picture.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['caption'] != null),
         assert(map['imageId'] != null),
         caption = map['caption'],
@@ -145,7 +149,7 @@ class Image {
   }
 
 
-  Image.fromSnapshot(DocumentSnapshot snapshot)
+  Picture.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);
 
   @override
