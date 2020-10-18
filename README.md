@@ -1,5 +1,5 @@
 # Sparky
-iOS/Android mobile application built with Flutter() and Firebase's NoSQL database to help spark memories in Alzheimer's patients and, more importantly maintain stable, long-term familial connections with family members and relatives.
+iOS/Android mobile application built with Flutter and Firebase's NoSQL database to help spark memories in Alzheimer's patients and, more importantly maintain stable, long-term familial connections with family members and relatives.
 
 https://flutter.dev/docs/development/ui/layout
 - Layout structure
