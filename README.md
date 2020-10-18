@@ -1,6 +1,9 @@
 # Sparky
 iOS/Android mobile application built with Flutter and Firebase's NoSQL database to help spark memories in Alzheimer's patients and, more importantly maintain stable, long-term familial connections with family members and relatives.
 
+Purpose:
+As a few of our members have worked with Alzheimer's patients, we know how hard each day can be for both the patient and their family. Seeing this grief first hand has made us really passionate about creating a way to make life easier for those mentally losing their own. Alzheimer’s is detrimental to people’s memories, so we wanted to focus on helping patients and their families stay connected to help fill in the memory gaps. Because of this, we decided to create an app that allows family members to upload photos identifying and reminding patients of their loved ones even when they can’t constantly be around. This app will allow any family member or friend to upload a picture that can be seen by the patient and other members with access. Think of it like a family based social media app that allows Alzheimer’s patients to digitally store their memories, constantly remind them of each memory, and help them organize short and long term memories so they can always reminisce about those they love.
+
 Sources:
 https://flutter.dev/docs/development/ui/layout
 - Layout structure
