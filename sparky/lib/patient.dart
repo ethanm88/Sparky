@@ -9,7 +9,6 @@ import 'package:flutter/widgets.dart';
 // This sample shows TabBar with two tabs.
 // The first tab is for short term memories
 // The second tab is for long term memories
-import 'photos.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
