@@ -79,8 +79,8 @@ class _ImageCaptureState extends State<ImageCapture> {
   Widget build(BuildContext context) {
     print("building");
     return Scaffold(
-
         appBar: AppBar(title: Text('Ted\'s Page')),
+
     bottomNavigationBar: BottomAppBar(
     child: Row(
     children: <Widget>[
@@ -94,7 +94,7 @@ class _ImageCaptureState extends State<ImageCapture> {
     ),
     ],
     ),
-
+    ),
 
     /*
             bottomNavigationBar: BottomAppBar(
@@ -113,34 +113,35 @@ class _ImageCaptureState extends State<ImageCapture> {
       ),
       * */
     // Preview the image and crop it
-    body: ListView(
-    children: <Widget>[
-    if (_imageFile != null) ...[
-    new TextField(
-    controller: captionController,
-    decoration: InputDecoration(
-    border: const OutlineInputBorder(),
-    hintText: 'Caption',
-    ),
-    ),
+      body: ListView(
+        children: <Widget>[
+          if (_imageFile != null) ...[
+            Image.file(_imageFile, width: 450, height:450),
+            new TextField(
+              controller: captionController,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Caption',
+              ),
+            ),
 
-    Row(
-    children: <Widget>[
-    FlatButton(
-    child: Icon(Icons.crop),
-    onPressed: _cropImage,
-    ),
-    FlatButton(
-    child: Icon(Icons.refresh),
-    onPressed: _clear,
-    ),
-    ],
-    ),
+            Row(
+              children: <Widget>[
+                FlatButton(
+                  child: Icon(Icons.crop),
+                  onPressed: _cropImage,
+                ),
+                FlatButton(
+                  child: Icon(Icons.refresh),
+                  onPressed: _clear,
+                ),
+              ],
+            ),
 
-    Uploader(file: _imageFile)
-    ]
-    ],
-    ),
+            Uploader(file: _imageFile)
+          ]
+        ],
+      ),
     );
   }
 }
