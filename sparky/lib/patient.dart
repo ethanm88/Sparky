@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'clickable.dart';
 /// Flutter code sample for AppBar
 
 // This sample shows TabBar with two tabs.
@@ -16,7 +17,16 @@ void main() => runApp(MyApp());
 
 String category1 = 'Short Term';
 String category2 = 'Long Term';
-/// This is the main application widget.
+
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
+
+List<String> images = new List<String>();
+
+void addImage(String image) {
+  images.add(image);
+}
+
 class MyApp extends StatelessWidget {
   static const String _title = 'Spark your day!';
 
@@ -29,8 +39,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
+
 
 class MyTabbedPage extends StatefulWidget {
   const MyTabbedPage({ Key key }) : super(key: key);
@@ -82,10 +91,23 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
           return Scaffold (
             body: GridView.count(
               crossAxisCount: 3,
-              children: List.generate(32, (index) {
+              children: List.generate(images.length, (index) {
                 return Center(
-                  child: (
-                      Image.network("https://bezkoder.com/wp-content/uploads/2019/07/dart-list-complete-reference-feature-image.png")
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) {
+                            return DetailScreen();
+                          }));
+                        },
+
+                        child: Image.network(images[index],
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }),
