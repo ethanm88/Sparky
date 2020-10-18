@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Widget to capture and crop the image
 
@@ -135,10 +137,26 @@ class _UploaderState extends State<Uploader> {
   StorageUploadTask _uploadTask;
 
   /// Starts an upload task
-  void _startUpload() {
+  Future<void> _startUpload() async {
 
     /// Unique file name for the file
-    String filePath = 'images/${DateTime.now()}.png';
+    String documentId = '2LjCQBHAxrTD6tQ9F5eI'; //change
+    Widget build(BuildContext context) {
+      return new StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('users').doc(documentId).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return new Text("Loading");
+            }
+            var userDocument = snapshot.data;
+            print('HELLOOOOOO');
+            print(userDocument["name"]);
+            return new Text(userDocument["name"]);
+          }
+      );
+    }
+
+    String filePath = 'images/hello.png';
     String caption = _ImageCaptureState.captionController.text;
     print(caption);
     setState(() {
