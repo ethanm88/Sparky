@@ -28,12 +28,15 @@ class MyApp extends StatelessWidget {
 /// Widget to capture and crop the image
 class ImageCapture extends StatefulWidget {
   _ImageCaptureState createState() {
+
     return _ImageCaptureState();
   }
 
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
+
+
   /// Active image file, caption for file
   File _imageFile;
   String _caption;
@@ -78,6 +81,7 @@ class _ImageCaptureState extends State<ImageCapture> {
     return Scaffold(
 
       // Select an image from the camera or gallery
+      appBar: AppBar(title: Text('Ted\'s Page')),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: <Widget>[
@@ -91,14 +95,28 @@ class _ImageCaptureState extends State<ImageCapture> {
             ),
           ],
         ),
-      ),
 
+
+      /*
+            bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.photo_camera),
+              onPressed: () => _pickImage(ImageSource.camera),
+            ),
+            IconButton(
+              icon: Icon(Icons.photo_library),
+              onPressed: () => _pickImage(ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+      * */
       // Preview the image and crop it
       body: ListView(
         children: <Widget>[
           if (_imageFile != null) ...[
-
-            Image.file(_imageFile, width: 450, height:450),
             new TextField(
               controller: captionController,
               decoration: InputDecoration(
