@@ -96,6 +96,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
                             child: Image.network(images[index]),
                           ),
                         ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                       ),
                     ],
                   ),
@@ -122,9 +125,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderSt
 //             ),
 //           ),
 //         ),
-//         onTap: () {
-//           Navigator.pop(context);
-//         },
+
 //       ),
 //     );
 //   }
